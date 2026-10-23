@@ -6,9 +6,14 @@
     "name": "agent-configs maintainers",
     "email": "devnull@example.com"
   },
-  "homepage": "https://github.com/example/agent-configs",
-  "repository": "https://github.com/example/agent-configs",
+  "homepage": "https://github.com/olegpustovit/agent-configs",
+  "repository": "https://github.com/olegpustovit/agent-configs",
   "license": "MIT",
-  "keywords": ["sample", "debug", "cursor-plugin", "agentpack"],
+  "keywords": [
+    "sample",
+    "debug",
+    "cursor-plugin",
+    "agentpack"
+  ],
   "logo": "assets/logo.svg"
 }

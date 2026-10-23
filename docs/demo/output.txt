@@ -1,0 +1,9 @@
+.cursor-plugin/plugin.json: sample-plugin 0.1.0
+.claude-plugin/plugin.json: sample-plugin 0.1.0
+Rules: sample-always.mdc, sample-globs.mdc
+Skill: skills/sample-skill/SKILL.md
+MCP: /bin/true placeholder, not a running server
+afterFileEdit: no-op hook exited 0
+beforeShellExecution: no-op hook exited 0
+sessionEnd: no-op hook exited 0
+No editor, agent session or MCP server was started.

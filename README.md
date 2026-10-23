@@ -1,42 +1,42 @@
 # agent-configs
 
-Shared [Cursor](https://cursor.com/docs/plugins.md) / Claude-style plugin trees, **agentpack** packages, and standalone skills for AI-assisted development.
+Reusable skills, commands and plugin directories for AI coding agents. Choose a bundle or copy an individual skill with its reference files.
 
-Repository: [github.com/olegpustovit/agent-configs](https://github.com/olegpustovit/agent-configs)
+![Reference plugin inspection and no-op hook results](docs/demo/check.png)
 
-## Layout
+The [local check](docs/demo/README.md) parses both reference manifests, checks the sample skill and runs the shipped no-op hooks. It does not demonstrate editor installation or a live MCP connection.
 
-| Path | What it is |
+## Start with the reference plugin
+
+With Git and Node.js installed:
+
+```sh
+git clone https://github.com/olegpustovit/agent-configs.git
+cd agent-configs
+node docs/demo/check.cjs
+```
+
+This checks [plugins/sample-plugin](plugins/sample-plugin/). Its MCP command is `/bin/true`, a placeholder rather than a server. Its hooks exit successfully without changing files. Read the plugin's [installation notes](plugins/sample-plugin/README.md) before connecting it to an editor.
+
+## Choose material
+
+| Path | Contents |
 | --- | --- |
-| [`plugins/sample-plugin/`](plugins/sample-plugin/) | Reference plugin: rules, skills, agents, commands, hooks, MCP stub, dual Cursor/Claude manifests, `agentpack.toml`. See its [README](plugins/sample-plugin/README.md) for local install and debugging. |
-| [`plugins/go-skills-plugin/`](plugins/go-skills-plugin/) | Go-focused skill bundle (architecture, testing, HTMX, Templ, SSE, etc.). Versioned via `agentpack.toml` (`name = "go-skills"`). |
-| [`plugins/rust-dev/`](plugins/rust-dev/) | Rust-focused skills (design patterns, modularity, performance). Versioned via `agentpack.toml` (`name = "rust-dev"`). |
-| [`plugins/simplifier/`](plugins/simplifier/) | Compact plugin (agents and agentpack stub). |
-| [`skills/`](skills/) | Standalone skills you can copy or wire into a plugin. Each skill lives in `<skill-id>/SKILL.md` with YAML frontmatter. |
-| [`skills/nudge-cli/`](skills/nudge-cli/) | Public Nudge CLI skill covering typed arguments, issue/project workflows, documents and databases, agents, workspace configuration, and imports. Copy the entire directory to retain its references. |
-| [`skills/paper-from-pack/`](skills/paper-from-pack/) | Turns a generated writer pack (venue rules, data, prior work, bio, writing rules) into a submission-ready paper, article, proposal or outline. Scripts check numbers, citations, page and word limits, and double-blind identity leaks; includes tests and an eval suite. |
-| [`commands/`](commands/) | Command definitions (e.g. session reflection) with frontmatter for tool agents. |
-| [`workspaces/`](workspaces/) | Eval and benchmark workspaces for skills; not part of consumer plugin payloads. |
+| [plugins/go-skills-plugin](plugins/go-skills-plugin/) | Go development skills |
+| [plugins/rust-dev](plugins/rust-dev/) | Rust development skills |
+| [plugins/simplifier](plugins/simplifier/) | A smaller agent plugin |
+| [skills](skills/) | Standalone skills with `SKILL.md` entry points |
+| [skills/nudge-cli](skills/nudge-cli/) | Nudge CLI workflows and command references |
+| [skills/paper-from-pack](skills/paper-from-pack/) | Drafting instructions and checks for a supplied writer pack. Human review remains necessary before submission. |
+| [commands](commands/) | Shared command definitions |
+| [workspaces](workspaces/) | Skill evaluation inputs and runs |
 
-## Where to put a new skill
+Keep a skill's whole directory when copying it, including scripts and references. Review instructions and tool requirements before enabling it. A directory's presence does not establish compatibility with every editor or agent version.
 
-- **Go** → `plugins/go-skills-plugin/skills/<skill-id>/SKILL.md`
-- **Rust** (this bundle) → `plugins/rust-dev/skills/<skill-id>/SKILL.md`
-- **Cross-cutting** → `skills/<skill-id>/SKILL.md`
-- **Reference / demo** → `plugins/sample-plugin/skills/<skill-id>/SKILL.md`
+Plugin directories include `agentpack.toml` metadata. Use the dependency syntax supported by your installed [agentpack](https://github.com/olegpustovit/agentpack) version. Editor discovery and agentpack staging are separate integration checks; neither was run for the local reference check above.
 
-Details and conventions: [AGENTS.md](AGENTS.md).
+## Add or change a skill
 
-## Using this repo
+Put Go-specific skills under `plugins/go-skills-plugin/skills/`, Rust-specific skills under `plugins/rust-dev/skills/`, and shared skills under `skills/`. Each skill has its own directory with a `SKILL.md` entry point. See [AGENTS.md](AGENTS.md) for conventions and package boundaries.
 
-- **As a plugin:** Symlink or copy a directory under `plugins/` (for example `plugins/sample-plugin`) into your editor’s local plugins path and reload the window. Details are in [`plugins/sample-plugin/README.md`](plugins/sample-plugin/README.md).
-- **With agentpack:** Point `agentpack.toml` in another project at a path or published key for `plugins/sample-plugin`, `plugins/go-skills-plugin`, `plugins/rust-dev`, etc., then run your usual `agentpack lock` / `agentpack sync` workflow.
-
-## Contributing
-
-When adding skills or plugin assets, match the patterns already in this tree (frontmatter, folder names, and manifest fields). Keep `plugins/sample-plugin` suitable as a minimal reference layout unless the goal is explicitly to extend that reference.
-
-## See also
-
-- [AGENTS.md](AGENTS.md) — guidance for AI/people working in this repository.
-- [Cursor plugins reference](https://cursor.com/docs/reference/plugins.md)
+[License](LICENSE)
