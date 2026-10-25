@@ -1,4 +1,0 @@
-interface:
-  display_name: "Build Next Stack"
-  short_description: "Build the Next.js UI on the Go foundation"
-  default_prompt: "Use $build-next-stack to implement this Next.js frontend on the project Go backend foundation."
