@@ -1,0 +1,5 @@
+name = "icloud-mail"
+version = "0.1.0"
+description = "iCloud Mail MCP (remote, per-user OAuth via mail.microapps.space)."
+
+[dependencies]
