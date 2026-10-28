@@ -11,6 +11,7 @@ This repo holds **reusable agent configuration**: Cursor/Claude plugin layouts, 
 | Path | Role |
 | --- | --- |
 | **`plugins/`** | Shippable plugin trees (manifests, `agentpack.toml`, bundled skills/agents). This is the default home for ecosystem bundles. |
+| **`drafts/build-go-stack/`** | Single source of truth for Go conventions. Extend this skill when Go guidance changes. |
 | **`skills/`** | Standalone skills meant to be copied or wired into a project/plugin without pulling a whole bundle. |
 | **`commands/`** | Shared command markdown (frontmatter + body). Mirror the style of `commands/reflect.md`. |
 | **`workspaces/`** | Skill eval / benchmark workspaces (inputs, runs, grading). Not packaged for end users; keep churn localized here. |
@@ -19,13 +20,12 @@ This repo holds **reusable agent configuration**: Cursor/Claude plugin layouts, 
 ## `plugins/` — packaged plugins
 
 - **`plugins/sample-plugin/`** — Reference layout: rules, skills, agents, commands, hooks, MCP stub, dual Cursor/Claude manifests. Preserve it as a small exemplar unless the task is to change that reference. See its README for symlink install.
-- **`plugins/go-skills-plugin/`** — Go ecosystem skills only. New Go skills: `plugins/go-skills-plugin/skills/<skill-id>/SKILL.md`. Bump or align `plugins/go-skills-plugin/agentpack.toml` when versioning matters.
 - **`plugins/rust-dev/`** — Rust ecosystem skills. New Rust skills for this bundle: `plugins/rust-dev/skills/<skill-id>/SKILL.md`.
 - **`plugins/simplifier/`** — Small plugin (e.g. agents); extend only as that package grows.
 
 ## Where to add a **new skill** (choose one)
 
-1. **Go-specific** → `plugins/go-skills-plugin/skills/<skill-id>/SKILL.md`
+1. **Go** → `drafts/build-go-stack/` (`SKILL.md` and `references/`). That draft is the only Go stack.
 2. **Rust-specific** (this repo’s Rust bundle) → `plugins/rust-dev/skills/<skill-id>/SKILL.md`
 3. **Cross-cutting or language-agnostic** → `skills/<skill-id>/SKILL.md` (YAML frontmatter: `name`, `description`)
 4. **Demo / template only** (for the reference plugin) → `plugins/sample-plugin/skills/<skill-id>/SKILL.md`

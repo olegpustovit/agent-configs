@@ -1,5 +1,0 @@
-name = "go-skills"
-version = "3.1.0"
-description = "Go development skills: clean architecture, testing, concurrency, HTMX frontend, Templ templates, Pico CSS styling (zero Node.js), SSE streaming, dashboard patterns, and Claude AI agents with clawde"
-
-[dependencies]

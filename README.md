@@ -22,7 +22,7 @@ This checks [plugins/sample-plugin](plugins/sample-plugin/). Its MCP command is 
 
 | Path | Contents |
 | --- | --- |
-| [plugins/go-skills-plugin](plugins/go-skills-plugin/) | Go development skills |
+| [drafts/build-go-stack](drafts/build-go-stack/) | Go conventions (single source of truth) |
 | [plugins/rust-dev](plugins/rust-dev/) | Rust development skills |
 | [plugins/simplifier](plugins/simplifier/) | A smaller agent plugin |
 | [skills](skills/) | Standalone skills with `SKILL.md` entry points |
@@ -37,6 +37,6 @@ Plugin directories include `agentpack.toml` metadata. Use the dependency syntax 
 
 ## Add or change a skill
 
-Put Go-specific skills under `plugins/go-skills-plugin/skills/`, Rust-specific skills under `plugins/rust-dev/skills/`, and shared skills under `skills/`. Each skill has its own directory with a `SKILL.md` entry point. See [AGENTS.md](AGENTS.md) for conventions and package boundaries.
+Go conventions live in [drafts/build-go-stack](drafts/build-go-stack/). Put Rust-specific skills under `plugins/rust-dev/skills/`, and shared skills under `skills/`. Each skill has its own directory with a `SKILL.md` entry point. See [AGENTS.md](AGENTS.md) for conventions and package boundaries.
 
 [License](LICENSE)
