@@ -19,13 +19,13 @@ This repo holds **reusable agent configuration**: Cursor/Claude plugin layouts, 
 ## `plugins/` — packaged plugins
 
 - **`plugins/sample-plugin/`** — Reference layout: rules, skills, agents, commands, hooks, MCP stub, dual Cursor/Claude manifests. Preserve it as a small exemplar unless the task is to change that reference. See its README for symlink install.
-- **`plugins/go-skills-plugin/`** — Go ecosystem skills only. New Go skills: `plugins/go-skills-plugin/skills/<skill-id>/SKILL.md`. Bump or align `plugins/go-skills-plugin/agentpack.toml` when versioning matters.
+- **`plugins/react-dev/`** — React frontend stack for apps served from a Go binary. It ships only `build-react-stack`; everything else (including `skills/build-go-stack`) comes through its `agentpack.toml`. Add third-party skills there instead of copying them.
 - **`plugins/rust-dev/`** — Rust ecosystem skills. New Rust skills for this bundle: `plugins/rust-dev/skills/<skill-id>/SKILL.md`.
 - **`plugins/simplifier/`** — Small plugin (e.g. agents); extend only as that package grows.
 
 ## Where to add a **new skill** (choose one)
 
-1. **Go-specific** → `plugins/go-skills-plugin/skills/<skill-id>/SKILL.md`
+1. **React frontend** → `plugins/react-dev/skills/<skill-id>/SKILL.md`; **Go backend** → extend `skills/build-go-stack/`
 2. **Rust-specific** (this repo’s Rust bundle) → `plugins/rust-dev/skills/<skill-id>/SKILL.md`
 3. **Cross-cutting or language-agnostic** → `skills/<skill-id>/SKILL.md` (YAML frontmatter: `name`, `description`)
 4. **Demo / template only** (for the reference plugin) → `plugins/sample-plugin/skills/<skill-id>/SKILL.md`

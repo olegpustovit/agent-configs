@@ -1,0 +1,8 @@
+{
+  "name": "react-dev",
+  "version": "0.1.0",
+  "description": "Fast React SPAs embedded in a Go binary: Vite, React Compiler, TanStack Router and Query, Tailwind, shadcn/ui, optional PWA.",
+  "homepage": "https://github.com/olegpustovit/agent-configs",
+  "repository": "https://github.com/olegpustovit/agent-configs",
+  "license": "MIT"
+}

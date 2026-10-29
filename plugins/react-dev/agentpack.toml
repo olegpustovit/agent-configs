@@ -1,0 +1,18 @@
+# Agentpack project manifest — direct dependencies only. Run `agentpack lock` to refresh pack.lock.
+
+name = "react-dev"
+version = "0.1.0"
+
+[dependencies]
+# Backend foundation that build-react-stack extends.
+"github.com/olegpustovit/agent-configs/skills/build-go-stack" = "dev"
+# UI components and design.
+"github.com/shadcn-ui/ui/skills/shadcn" = {}
+"github.com/pbakaus/impeccable" = {}
+# React performance and composition rules.
+"github.com/vercel-labs/agent-skills/skills/react-best-practices" = {}
+"github.com/vercel-labs/agent-skills/skills/composition-patterns" = {}
+# TanStack Router, maintained by TanStack.
+"github.com/tanstack/router/packages/react-router/skills/react-router" = {}
+"github.com/tanstack/router/packages/router-core/skills/router-core" = {}
+"github.com/tanstack/router/packages/react-router/skills/compositions/router-query" = {}

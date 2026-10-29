@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build React Stack"
+  short_description: "Build the fast React SPA (Vite, TanStack Router, React Compiler) embedded in the Go binary"
+  default_prompt: "Use $build-react-stack to implement this React SPA frontend on the project Go backend foundation."
