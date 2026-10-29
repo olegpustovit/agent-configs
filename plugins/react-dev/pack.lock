@@ -1,0 +1,100 @@
+lockfile_version = 3
+
+[meta]
+name = 'react-dev'
+version = '0.1.0'
+
+[[packages]]
+module = 'github.com/olegpustovit/agent-configs/skills/build-go-stack'
+direct = true
+kind = 'skill'
+url = 'https://github.com/olegpustovit/agent-configs/tree/dev/skills/build-go-stack'
+owner = 'olegpustovit'
+repo = 'agent-configs'
+path = 'skills/build-go-stack'
+commit = '9630e5fc389ef41ba8330526f9f0a3f20b735508'
+cache_key = '74754f94452f98f646993e871b7eca3dfcfd5cdae59d69f9efe9781342b1f6ca'
+content_hash = 'sha256-tree-v1:d44e1d1557e63799e55657050b2f9efd6f38c4c90124755fb16bca2b3048acb3'
+
+[[packages]]
+module = 'github.com/pbakaus/impeccable'
+direct = true
+kind = 'plugin'
+url = 'https://github.com/pbakaus/impeccable/tree/HEAD'
+owner = 'pbakaus'
+repo = 'impeccable'
+commit = '5e745ace7e151feb2a93d360d0281fe39448b857'
+cache_key = 'f230ddccea8a9a4e74749d9092b73b1d5fc3c21b088031b594cd975bfc767cb7'
+content_hash = 'sha256-tree-v1:8918c99e6418b4a4de9676511dde4fdc1b895a2472f594d58819739479f1ee15'
+
+[[packages]]
+module = 'github.com/shadcn-ui/ui/skills/shadcn'
+direct = true
+kind = 'skill'
+url = 'https://github.com/shadcn-ui/ui/tree/HEAD/skills/shadcn'
+owner = 'shadcn-ui'
+repo = 'ui'
+path = 'skills/shadcn'
+commit = '96da9cc7f1aa10580a3741664e2a77c721206c00'
+cache_key = 'f19c4106a666af9af852840c1526d5a88cdb3d82c03671cdc87607d322dfaccb'
+content_hash = 'sha256-tree-v1:ed6e635dd7c1471a2e4c90b86b5a39946af17d104b0b6e2af74ea8e1090e87f1'
+
+[[packages]]
+module = 'github.com/tanstack/router/packages/react-router/skills/compositions/router-query'
+direct = true
+kind = 'skill'
+url = 'https://github.com/tanstack/router/tree/HEAD/packages/react-router/skills/compositions/router-query'
+owner = 'tanstack'
+repo = 'router'
+path = 'packages/react-router/skills/compositions/router-query'
+commit = 'da2adec76dbe6c0da6d6a0d5640f7b9388217f45'
+cache_key = 'cfa4b936bbea5f09f993c3d644d529c21e767e0a426f5c8230fc38012d31867f'
+content_hash = 'sha256-tree-v1:cde7c6baa20aa8ed03d5f45ca0c69173f03f921d9ae187a6035169cb8b23d687'
+
+[[packages]]
+module = 'github.com/tanstack/router/packages/react-router/skills/react-router'
+direct = true
+kind = 'skill'
+url = 'https://github.com/tanstack/router/tree/HEAD/packages/react-router/skills/react-router'
+owner = 'tanstack'
+repo = 'router'
+path = 'packages/react-router/skills/react-router'
+commit = 'da2adec76dbe6c0da6d6a0d5640f7b9388217f45'
+cache_key = '3d5bdf2f990e703d1ef0cc25db34e8c6f280173cd3a53bedfb51da61279428d7'
+content_hash = 'sha256-tree-v1:33ac9cb27033b55a4f38a97d5c81f224b8c20d38639278578341e9e01fc681b5'
+
+[[packages]]
+module = 'github.com/tanstack/router/packages/router-core/skills/router-core'
+direct = true
+kind = 'skill'
+url = 'https://github.com/tanstack/router/tree/HEAD/packages/router-core/skills/router-core'
+owner = 'tanstack'
+repo = 'router'
+path = 'packages/router-core/skills/router-core'
+commit = 'da2adec76dbe6c0da6d6a0d5640f7b9388217f45'
+cache_key = '95d0ac3c4fc144fe699a8dcbc3247db3fda13a8e27ff4502b05344b2a1db926e'
+content_hash = 'sha256-tree-v1:f6054d22939f3550908494cfb05e9619b540a73f44108e72820fa21ab3174f97'
+
+[[packages]]
+module = 'github.com/vercel-labs/agent-skills/skills/composition-patterns'
+direct = true
+kind = 'skill'
+url = 'https://github.com/vercel-labs/agent-skills/tree/HEAD/skills/composition-patterns'
+owner = 'vercel-labs'
+repo = 'agent-skills'
+path = 'skills/composition-patterns'
+commit = '1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62'
+cache_key = 'c64488561c2c99b1fc80591ebdb30a0b5074d538fc363fed98208eb24067537a'
+content_hash = 'sha256-tree-v1:caa49c02279519fba9ef55d92c256c52f1cad177216060865ec2b9590ba8b719'
+
+[[packages]]
+module = 'github.com/vercel-labs/agent-skills/skills/react-best-practices'
+direct = true
+kind = 'skill'
+url = 'https://github.com/vercel-labs/agent-skills/tree/HEAD/skills/react-best-practices'
+owner = 'vercel-labs'
+repo = 'agent-skills'
+path = 'skills/react-best-practices'
+commit = '1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62'
+cache_key = '9fcf58127901bf2b57888a34ef2b6d465a29be49ed80c81d6cd19feda641f7cb'
+content_hash = 'sha256-tree-v1:5a01ac4e21769ea41c11d319d3dfb0709e35f7f3abbf0f071c20ef632e49bdb2'
