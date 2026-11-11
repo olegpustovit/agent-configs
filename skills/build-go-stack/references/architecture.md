@@ -63,8 +63,7 @@ For a component such as posts:
 ```text
 internal/components/posts/
   models.go       # Post and related value types
-  collections.go  # Mongo collection names owned by this component
-  repository.go   # Repository port required by use cases
+  repository.go   # Repository port, PostgreSQL implementation, and SQL
   service.go      # use-case behavior
   helpers.go      # pure cohesive helpers, only if useful
 ```
@@ -81,14 +80,14 @@ internal/components/
   agent/
   initiative/
   notification/
-  auth/           # principals, sessions, credentials (no Mongo models)
+  auth/           # principals, sessions, credentials
   overview/       # cross-component read models / snapshot assembly
 ```
 
 Rules:
 
-- Each leaf component owns its document types and collection constants.
-- Infrastructure repositories decode into the owning component package's types.
+- Each leaf component owns its models, repository contract, PostgreSQL repository, and SQL statements.
+- Keep shared pool and migration support under `internal/infrastructure/postgres`; it must not import components.
 - API JSON mappers live in transport (`cmd/api/apijson/`), not in component packages. Component orchestrators such as `overview/` return component snapshots; handlers map them to JSON.
 - Orchestrator services (`overview/`) may import many leaf components; leaf components must not import orchestrators or peers upward.
 
@@ -96,7 +95,7 @@ Treat filenames as navigation conventions, not rigid layer requirements. Keep a 
 
 ## Anti-pattern: monolithic `entities` package
 
-Do **not** create `internal/components/entities/` (or similar) containing every collection's struct and every collection-name constant.
+Do **not** create `internal/components/entities/` (or similar) containing every table's struct and every table-name constant.
 
 Why it fails:
 
@@ -108,7 +107,7 @@ Why it fails:
 Preferred shape:
 
 ```text
-internal/components/issue/repository.go          # Repository contract + Mongo implementation
+internal/components/issue/repository.go          # Repository contract + PostgreSQL implementation
 internal/components/issue/service.go
 internal/components/overview/service.go          # injects component ports only
 ```
@@ -117,11 +116,11 @@ When porting a legacy schema, resist the shortcut of mirroring the old database 
 
 ## Repository ownership (required)
 
-Every persisted component owns both its repository contract and Mongo-backed implementation in one flat component package:
+Every persisted component owns both its repository contract and PostgreSQL implementation in one flat component package:
 
 | File | Contents |
 |------|----------|
-| `internal/components/<component>/repository.go` | `Repository` interface, query/page types, component errors, concrete `MongoRepository`, `NewMongoRepository(client)`, BSON, and driver calls. |
+| `internal/components/<component>/repository.go` | `Repository` interface, query/page types, component errors, concrete `PostgresRepository`, `NewPostgresRepository(pool)`, SQL constants, and pgx calls. |
 
 Example for workspace:
 
@@ -132,21 +131,21 @@ internal/components/workspace/repository.go
 Wire in bootstrap:
 
 ```go
-workspaceRepo := workspace.NewMongoRepository(mongoClient)
+workspaceRepo := workspace.NewPostgresRepository(pool)
 svc := workspace.NewService(workspaceRepo) // accepts workspace.Repository
 ```
 
-Shared connection/query helpers and canonical physical collection constants may remain under `internal/infrastructure/mongodb`, but that package must not import components. Repository implementations must avoid peer-component imports; decode cross-aggregate checks into minimal local BSON projection types. Application-wide index and validator setup may remain in infrastructure bootstrap code.
+Shared pool and migration helpers may remain under `internal/infrastructure/postgres`, but that package must not import components. Repository implementations must avoid peer-component imports; scan cross-aggregate checks into minimal local projection types. Keep schema changes and indexes in embedded migrations.
 
 ## Anti-pattern: per-component infrastructure adapters
 
 Do **not** create:
 
 ```text
-internal/infrastructure/mongo/workspace_repository.go   # WRONG
-internal/infrastructure/mongo/issue_repository.go       # WRONG
-internal/infrastructure/mongo/workspace/repository.go   # WRONG
-internal/infrastructure/mongo/store.go                  # WRONG
+internal/infrastructure/postgres/workspace_repository.go   # WRONG
+internal/infrastructure/postgres/issue_repository.go       # WRONG
+internal/infrastructure/postgres/workspace/repository.go   # WRONG
+internal/infrastructure/postgres/store.go                  # WRONG
 ```
 
 Why it fails:
@@ -159,7 +158,7 @@ Keep each implementation inside its owning component package.
 
 ## Anti-pattern: monolithic infrastructure `Store` in component services
 
-Do **not** grow one shared `infrastructure/mongo/store.go` with every entity's CRUD methods and inject `*mongo.Store` into component services.
+Do **not** grow one shared `internal/infrastructure/postgres/store.go` with every entity's CRUD methods and inject it into component services.
 
 Why it fails:
 
@@ -171,15 +170,15 @@ Preferred shape:
 ```text
 internal/components/workspace/repository.go
 internal/components/issue/repository.go
-cmd/api/bootstrap.go   # workspace.NewMongoRepository(client), issue.NewMongoRepository(client), ...
+cmd/api/bootstrap.go   # workspace.NewPostgresRepository(pool), issue.NewPostgresRepository(pool), ...
 ```
 
 Rules:
 
 - Keep the `Repository` contract small enough for service fakes.
-- Assert that each component's concrete `MongoRepository` implements its local `Repository` contract.
-- Translate driver errors to component errors inside the repository implementation.
-- Let the implementation depend only on shared Mongo primitives, never on another component's repository implementation.
+- Assert that each component's concrete `PostgresRepository` implements its local `Repository` contract.
+- Translate PostgreSQL errors to component errors inside the repository implementation.
+- Let the implementation depend only on shared pgx primitives, never on another component's repository implementation.
 
 ## Dependency-selection checklist
 
@@ -199,7 +198,7 @@ Search and verify at implementation time because library health and versions cha
 Choose tools only when the project needs the corresponding contract:
 
 - OpenAPI: generate typed transport contracts from the API schema.
-- SQL: generate type-safe query bindings from reviewed SQL.
+- SQL: keep reviewed statements beside repository methods; do not generate query bindings.
 - Protobuf: use the official protobuf toolchain for protocol contracts.
 - Mocks: generate only for important owned interfaces when a hand-written fake would be repetitive.
 

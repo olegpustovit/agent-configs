@@ -25,6 +25,10 @@ For example, Vault may provide `database_url`, while `NUDGE_DATABASE_URL` intent
 
 Avoid `map[string]any` beyond the source boundary. Use explicit duration, URL, enum, byte-size, and list parsing. Distinguish unset from explicitly empty when empty is meaningful. Do not mutate configuration after dependency construction.
 
+## PostgreSQL connection and startup
+
+Use one application setting, `<APP>_DATABASE_URL`, parsed into typed configuration. Validate it before opening the pool and never log its credentials. Start in this order: load and validate configuration, open the pool (creating the application database if missing), apply embedded migrations under the PostgreSQL advisory lock, construct repositories and services, then listen. Exit without serving if opening or migration fails.
+
 ## Bootstrap Vault from the environment
 
 Reserve a narrow prefixed namespace such as:

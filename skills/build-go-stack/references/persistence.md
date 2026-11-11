@@ -4,7 +4,7 @@ Use this reference before adding or changing persistence. PostgreSQL is the defa
 
 ## Rules
 
-1. **PostgreSQL by default.** Use SQLite only for a true single-file app. Keep existing MongoDB applications on MongoDB unless a migration is explicitly requested.
+1. **PostgreSQL by default.** Use SQLite only for a true single-file app. Keep existing applications on their current database unless a migration is explicitly requested.
 2. **One application connection setting:** `<APP>_DATABASE_URL`. Read it into typed configuration, validate it before startup, and never log credentials from it. Tests may use a separate test-only `TEST_DATABASE_URL` pointing at a maintenance database.
 3. **Startup order:** load configuration → open the pool (create the application database if missing) → apply embedded migrations under a PostgreSQL advisory lock → construct repositories and services → listen. If opening or migrating fails, startup exits without serving.
 4. **Forward-only migrations:** keep SQL in `internal/infrastructure/postgres/migrations/NNNN_name.sql` and embed it with `//go:embed`. Never edit an applied migration. Do not add a migration command or Make target; the application applies migrations at startup.

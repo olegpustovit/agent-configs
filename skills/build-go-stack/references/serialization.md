@@ -62,6 +62,10 @@ Let repositories scan directly into an entity when database columns and componen
 
 Do not add transformations merely to preserve a diagram. Each conversion must enforce a boundary, change semantics, or protect a contract. Remove passthrough mappers that only copy equal fields.
 
+## Map PostgreSQL rows directly
+
+Use `db` struct tags for PostgreSQL column names when scanning entities with pgx. Map nullable SQL columns to pointers so SQL `NULL` stays distinct from a zero value. For `jsonb`, use `json.RawMessage` when the shape is intentionally dynamic or a typed Go struct when it is known.
+
 ## Verify the boundary
 
 - Test exact JSON keys for entities containing internal fields.

@@ -11,7 +11,7 @@ Name backend workflows and keep their scopes distinct:
 | targeted test | changed Go package or precise `-run` case | every edit |
 | backend suite | cached `go test ./...` | before handoff |
 | backend build | Go command using current generated inputs | frequently |
-| integration tier | affected external boundaries | when risk requires |
+| integration tier | PostgreSQL repository contracts and migration locking against disposable real databases | after persistence changes and before handoff |
 | clean baseline | uncached backend pipeline | scheduled or after pipeline changes |
 
 Measure comparable wall times. Establish stable budgets from repeated measurements and store them in version control. Warn locally and fail CI only with enough tolerance for machine noise.
@@ -29,6 +29,7 @@ Primary sources: [Go command caching](https://pkg.go.dev/cmd/go#hdr-Build_and_te
 - Use table-driven tests for pure component behavior.
 - Use small fakes for consumer-owned I/O, clock, queue, filesystem, or network boundaries when they make important tests deterministic.
 - Test concrete repositories against the real datastore in the appropriate integration tier.
+- Keep business tests datastore-independent. Use `pgtest.New(t)` to clone an isolated database from a migrated template for PostgreSQL repository contracts; test migrations separately against an empty database.
 - Measure slow tests with `go test -count=1 -json ./...` periodically, never as the default loop.
 - Rewrite, move, or remove redundant and flaky tests only after preserving the important behavior and failure mode.
 - Use benchmarks and repeated `benchstat` samples for hot code; do not confuse runtime benchmarks with build wall-clock budgets.
