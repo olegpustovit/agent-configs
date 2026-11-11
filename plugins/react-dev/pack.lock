@@ -12,9 +12,9 @@ url = 'https://github.com/olegpustovit/agent-configs/tree/dev/skills/build-go-st
 owner = 'olegpustovit'
 repo = 'agent-configs'
 path = 'skills/build-go-stack'
-commit = '9630e5fc389ef41ba8330526f9f0a3f20b735508'
-cache_key = '74754f94452f98f646993e871b7eca3dfcfd5cdae59d69f9efe9781342b1f6ca'
-content_hash = 'sha256-tree-v1:d44e1d1557e63799e55657050b2f9efd6f38c4c90124755fb16bca2b3048acb3'
+commit = '6da3144a254b8c940fa525b9f5236bd1e1eef139'
+cache_key = '67fd389247108c67c97c614e64445eadab2e8fb46eb49db907a6cb74e69b7180'
+content_hash = 'sha256-tree-v1:00b15fa88566e2c189b4c27d75e86351d5298542292eeb4802eef19811a0e18c'
 
 [[packages]]
 module = 'github.com/pbakaus/impeccable'
