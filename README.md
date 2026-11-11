@@ -26,7 +26,7 @@ This checks [plugins/sample-plugin](plugins/sample-plugin/). Its MCP command is 
 | [plugins/rust-dev](plugins/rust-dev/) | Rust development skills |
 | [plugins/simplifier](plugins/simplifier/) | A smaller agent plugin |
 | [skills](skills/) | Standalone skills with `SKILL.md` entry points |
-| [skills/build-go-stack](skills/build-go-stack/) | Go backend architecture, configuration, errors, MCP and builds |
+| [skills/build-go-stack](skills/build-go-stack/) | Go backend architecture, PostgreSQL persistence, SQLite for single-file apps, deployment, MCP and testing |
 | [skills/nudge-cli](skills/nudge-cli/) | Nudge CLI workflows and command references |
 | [skills/paper-from-pack](skills/paper-from-pack/) | Drafting instructions and checks for a supplied writer pack. Human review remains necessary before submission. |
 | [commands](commands/) | Shared command definitions |

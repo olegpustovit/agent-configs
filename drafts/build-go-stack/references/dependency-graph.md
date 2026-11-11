@@ -51,11 +51,11 @@ Use concrete implementations by default:
 
 ```go
 type DogRepository struct {
-	db *sql.DB
+	pool *pgxpool.Pool
 }
 
-func NewDogRepository(db *sql.DB) *DogRepository {
-	return &DogRepository{db: db}
+func NewDogRepository(pool *pgxpool.Pool) *DogRepository {
+	return &DogRepository{pool: pool}
 }
 
 type DogService struct {
@@ -78,7 +78,7 @@ Define an interface in the consuming package—not the implementing package—pr
 - a narrow fake materially improves important test speed, isolation, or determinism;
 - production has multiple implementations;
 - the consumer requires only a small subset of a broad dependency;
-- the boundary represents a capability such as transactions, time, publishing, or object storage.
+- the boundary represents a capability such as time, publishing, or object storage.
 
 ```go
 // Package dogs owns the capability it consumes.
@@ -104,7 +104,7 @@ A service may aggregate repositories, lower-level services, and infrastructure c
 - Put a workflow spanning house and dog under the component/application package that owns the user-visible use case, commonly `house` if house is the parent.
 - Extract a separate use-case package when neither component owns the workflow cleanly.
 - Pass results downward or return events upward; avoid peer services calling each other recursively.
-- Keep transactions at the highest layer that owns all writes in the atomic operation.
+- Keep each repository method's `pgx.BeginFunc` transaction inside its owning component. Do not span components with one transaction; place writes that must commit together under the component that owns them.
 - Publish external messages after persistence through an established transactional pattern when consistency requires it; do not hide distributed workflows inside entity methods.
 
 ## Review every new dependency

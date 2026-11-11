@@ -26,13 +26,22 @@ Primary sources: [Go errors package](https://pkg.go.dev/errors) and [Working wit
 Wrapping with `%w` makes the underlying error observable to callers. Translate implementation-specific errors before they leave infrastructure:
 
 ```go
-if errors.Is(err, sql.ErrNoRows) {
+if errors.Is(err, pgx.ErrNoRows) {
 	return Dog{}, fmt.Errorf("find dog %q: %w", id, dogs.ErrNotFound)
 }
 return Dog{}, fmt.Errorf("query dog %q: %v", id, err)
 ```
 
-Use `%v` at this boundary when the vendor error text is useful for diagnostics but its identity must remain private. Component services and HTTP mapping must depend only on owned sentinel or typed errors. Do not make `sql.ErrNoRows`, a queue-client type, or a vendor status code part of the component API accidentally.
+Use `%v` at this boundary when the vendor error text is useful for diagnostics but its identity must remain private. Component services and HTTP mapping must depend only on owned sentinel or typed errors. Do not make `pgx.ErrNoRows`, a queue-client type, or a vendor status code part of the component API accidentally.
+
+Translate PostgreSQL errors in the repository before returning them:
+
+| PostgreSQL condition | Component error |
+| --- | --- |
+| `pgx.ErrNoRows` | `ErrNotFound` |
+| SQLSTATE `23505` from `*pgconn.PgError` | `ErrConflict` |
+
+Inspect `*pgconn.PgError` with `errors.As` inside the repository. Do not expose its type or raw SQLSTATE to services or handlers. Preserve context cancellation and deadline errors.
 
 Define stable sentinel or typed errors only when callers need different behavior. Document them and always expect callers to use `errors.Is` or `errors.As`. Do not classify errors by matching strings.
 
