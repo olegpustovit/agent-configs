@@ -1,6 +1,6 @@
 ---
 name: build-go-stack
-description: Structure, implement, refactor, or review Go backend applications using Fiber, cmd-local composition and HTTP transport, component-owned domain and Mongo persistence, contextual error wrapping with final-boundary logging, concrete types, prefixed environment and optional Vault configuration, dependency inversion, official MCP integrations, and fast cached verification. Use for Go module layout, component models, repositories, services, JSON/API contracts, handlers, workers, CLIs, configuration, secrets, logging, startup, shutdown, dependency design, generation, backend builds, tests, performance, or architecture reviews. This skill is backend-only.
+description: Structure, implement, refactor, or review Go backend applications using Fiber, cmd-local composition and HTTP transport, component-owned domain and PostgreSQL persistence with embedded self-applying migrations (SQLite for single-file apps), contextual error wrapping with final-boundary logging, concrete types, prefixed environment and optional Vault configuration, dependency inversion, official MCP integrations, and fast cached verification. Use for Go module layout, component models, repositories, services, JSON/API contracts, handlers, workers, CLIs, configuration, secrets, logging, startup, shutdown, dependency design, generation, backend builds, tests, performance, or architecture reviews. This skill is backend-only.
 ---
 
 # Build Go Stack
@@ -13,12 +13,14 @@ Build an idiomatic Go backend around `cmd/` and `internal/`. Keep repository ins
 2. Preserve compatible choices. Do not restructure unrelated code merely to match this skill.
 3. Read [references/architecture.md](references/architecture.md) before scaffolding, moving packages, selecting dependencies, or changing backend build composition.
 4. Read [references/dependency-graph.md](references/dependency-graph.md) before adding component dependencies, service calls, repositories, or cross-component workflows.
-5. Read [references/performance.md](references/performance.md) before changing Go tests, build targets, generation, CI caches, or developer feedback loops.
-6. Read [references/configuration.md](references/configuration.md) before adding configuration, environment variables, Vault, logging, startup, shutdown, or dependency construction.
-7. Read [references/serialization.md](references/serialization.md) before changing API types, JSON, database records, dynamic values, or layer transforms.
-8. Read [references/errors.md](references/errors.md) before changing error handling, retries, HTTP responses, worker failures, cleanup, or logging.
-9. Read [references/mcp.md](references/mcp.md) before adding or auditing an MCP command, endpoint, transport, tool, resource, prompt, or protocol behavior. It defines SDK ownership, tool contracts, trust boundaries, and completion evidence for a production audit.
-10. Confirm unclear behavior only when a reasonable assumption could materially change the result.
+5. Read [references/persistence.md](references/persistence.md) before adding or changing persistence, repositories, migrations, or database tests.
+6. Read [references/serialization.md](references/serialization.md) before changing API types, JSON, database records, dynamic values, or layer transforms.
+7. Read [references/errors.md](references/errors.md) before changing error handling, retries, HTTP responses, worker failures, cleanup, or logging.
+8. Read [references/configuration.md](references/configuration.md) before adding configuration, environment variables, Vault, logging, startup, shutdown, or dependency construction.
+9. Read [references/performance.md](references/performance.md) before changing Go tests, build targets, generation, CI caches, or developer feedback loops.
+10. Read [references/deploy.md](references/deploy.md) before changing release, deployment, service-manager configuration, or database backups.
+11. Read [references/mcp.md](references/mcp.md) before adding or auditing an MCP command, endpoint, transport, tool, resource, prompt, or protocol behavior. It defines SDK ownership, tool contracts, trust boundaries, and completion evidence for a production audit.
+12. Confirm unclear behavior only when a reasonable assumption could materially change the result.
 
 ## Use the standard backend layout
 
@@ -48,7 +50,9 @@ backend/
       auth/
       overview/
     infrastructure/
-      mongodb/
+      postgres/
+        migrations/
+          0001_init.sql
       messages/
       queue/
   go.mod
@@ -70,8 +74,10 @@ Add only commands and packages the application needs. Keep component rules and a
 
 - Treat humans and agents as first-class actors wherever the domain permits ownership, responsibility, authorship, participation, or assigned work.
 - Keep each bounded context under `internal/components/<name>/`; do not create a shared entity dump.
-- Keep the service-facing `Repository` port and concrete `MongoRepository` together in the owning component's flat `repository.go`.
-- Expose `NewMongoRepository(client) *MongoRepository` and assert interface satisfaction. Keep shared driver helpers free of component imports.
+- Keep the service-facing `Repository` port and concrete `PostgresRepository` together in the owning component's flat `repository.go`.
+- Expose `NewPostgresRepository(pool *pgxpool.Pool) *PostgresRepository` and assert interface satisfaction. Keep shared driver helpers free of component imports.
+- Keep existing MongoDB applications on their current datastore unless the user requests a migration.
+- Put SQL statements beside their repository methods as constants. Pass values with `pgx.NamedArgs` and never concatenate input into SQL.
 - Keep services concrete. Add a small consumer-owned interface only for a real replacement boundary, important fast fake, or multiple implementations.
 - Keep cross-component workflows in the highest package owning the use case. Maintain an acyclic import graph.
 - Keep HTTP concerns out of components and database-specific records out of handlers and service APIs.
@@ -109,6 +115,9 @@ Use current primary sources for unstable APIs. Never guess package APIs from mem
 - Do not put business logic in handlers, `main.go`, generated code, or database adapters.
 - Do not create user-only ownership shortcuts where actors can also be agents.
 - Do not create a global entities package, shared persistence store, or per-component infrastructure adapter tree.
+- Do not add an ORM, query builder, or SQL generator; keep SQL visible in the owning component.
+- Do not edit an applied migration, add a down migration, or add a manual migration command. Embed forward-only migrations and apply them during application startup.
+- Do not span a transaction across components; keep each repository method's transaction within its owning component.
 - Do not introduce interfaces for every service or repository.
 - Do not create circular ownership, bidirectional service calls, or a coordinator that knows every component.
 - Do not log and return the same error or expose private vendor error identity unintentionally.
