@@ -1,0 +1,9 @@
+# The `cargo t` test runner. Copy this directory to `tools/t/` in the workspace and add the alias from
+# references/performance.md to `.cargo/config.toml`. Standard library only, so it builds in about a second.
+[package]
+name = "t"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[workspace]

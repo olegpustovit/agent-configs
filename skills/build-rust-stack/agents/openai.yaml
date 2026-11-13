@@ -1,0 +1,4 @@
+interface:
+  display_name: "Build Rust Stack"
+  short_description: "Build a robust, fast Rust backend foundation"
+  default_prompt: "Use $build-rust-stack to structure and implement this Rust backend."

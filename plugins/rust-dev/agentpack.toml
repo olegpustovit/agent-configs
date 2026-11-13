@@ -1,8 +1,0 @@
-# Agentpack project manifest — direct dependencies only. Run `agentpack lock` to refresh pack.lock.
-
-name = "rust-dev"
-version = "0.0.2"
-
-[dependencies]
-# "github.com/owner/repo/path" = {}
-

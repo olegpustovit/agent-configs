@@ -23,10 +23,10 @@ This checks [plugins/sample-plugin](plugins/sample-plugin/). Its MCP command is 
 | Path | Contents |
 | --- | --- |
 | [plugins/react-dev](plugins/react-dev/) | Fast React SPAs embedded in a Go binary; pulls in `build-go-stack` and third-party React, TanStack, shadcn and design skills |
-| [plugins/rust-dev](plugins/rust-dev/) | Rust development skills |
 | [plugins/simplifier](plugins/simplifier/) | A smaller agent plugin |
 | [skills](skills/) | Standalone skills with `SKILL.md` entry points |
 | [skills/build-go-stack](skills/build-go-stack/) | Go backend architecture, PostgreSQL persistence, SQLite for single-file apps, deployment, MCP and testing |
+| [skills/build-rust-stack](skills/build-rust-stack/) | Rust backend architecture on Tokio and axum, PostgreSQL persistence with sqlx, low-allocation hot paths, builds, deployment, MCP and testing |
 | [skills/nudge-cli](skills/nudge-cli/) | Nudge CLI workflows and command references |
 | [skills/paper-from-pack](skills/paper-from-pack/) | Drafting instructions and checks for a supplied writer pack. Human review remains necessary before submission. |
 | [commands](commands/) | Shared command definitions |
@@ -38,6 +38,6 @@ Plugin directories include `agentpack.toml` metadata. Use the dependency syntax 
 
 ## Add or change a skill
 
-Put React frontend skills under `plugins/react-dev/skills/`, Rust-specific skills under `plugins/rust-dev/skills/`, and shared skills under `skills/`. Each skill has its own directory with a `SKILL.md` entry point. See [AGENTS.md](AGENTS.md) for conventions and package boundaries.
+Put React frontend skills under `plugins/react-dev/skills/` and shared skills under `skills/`. Rust backend guidance lives in `skills/build-rust-stack/`. Each skill has its own directory with a `SKILL.md` entry point. See [AGENTS.md](AGENTS.md) for conventions and package boundaries.
 
 [License](LICENSE)
