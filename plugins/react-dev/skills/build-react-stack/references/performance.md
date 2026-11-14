@@ -1,6 +1,6 @@
 # Fast UI checks, build, and staging
 
-Use this reference to keep frontend iteration independent from Go while preserving a correct combined artifact.
+Use this reference to keep frontend iteration independent from the Go or Rust backend while preserving a correct combined artifact.
 
 ## Scripts
 
@@ -39,10 +39,21 @@ ui-test       -> UI source and Vitest configuration
 ui-install    -> package.json + bun.lock
 ui-build      -> UI source/config + public/ + bun.lock
 ui-stage      -> ui-build output + build verification + content fingerprint
-artifact      -> fresh ui-stage + build-go-stack backend artifact + fallback smoke test
+artifact      -> fresh ui-stage + backend release artifact (build-go-stack or build-rust-stack) + fallback smoke test
 ```
 
 Do not make the normal backend test or build depend on `ui-build`. The complete `artifact` target must prove that the staged build matches current UI inputs.
+
+## Keep the Rust backend loop fast
+
+`build-rust-stack` (its `references/performance.md`) owns the `cargo t` wrapper, deadlines, build budgets, and dev profile; apply it unchanged. The frontend seam adds only these rules:
+
+- The backend edit loop (`cargo check -p <crate>`, `cargo t -p <crate> <filter>`) never installs, builds, or stages the UI. No `build.rs` invokes Bun or Vite or watches `ui/`.
+- Keep `rust-embed`'s default debug behavior, which reads `ui-dist/` from disk at runtime instead of compiling it in, so restaging does not recompile the binary crate. Do not enable `debug-embed`. Verify this behavior for the pinned version; if staged files do trigger a debug rebuild, the unchanged-content staging rule below is what keeps the incremental build warm.
+- Release builds embed the files, so a changed UI recompiles and relinks only the binary crate that owns `ui-dist/`; keep the embed out of `core` so a UI change never rebuilds it.
+- Run the fallback contract test through `cargo t` under its fixed deadlines (2 s unit, 5 s integration; slow tier only with `T_SLOW=1`), never raw `cargo test`. It is in-memory; it never needs the slow tier.
+- When adding `rust-embed`, `memory-serve`, or their features, measure the binary crate's rebuild with `cargo t --touch crates/api/src/webui.rs --budget 5 -p api` and keep it within the top-binary budget.
+- The smoke test against the release binary belongs to the `artifact` target, not to `cargo t`.
 
 ## Preserve caches and content identity
 
@@ -51,7 +62,7 @@ Do not make the normal backend test or build depend on `ui-build`. The complete 
 - Fingerprint `src/` (including `routeTree.gen.ts`), `public/`, `index.html`, `vite.config.ts`, `tsconfig*.json`, `components.json`, `package.json`, and `bun.lock`.
 - Exclude `dist`, `node_modules`, logs, and unrelated backend files from the fingerprint.
 - Build into `ui/dist`, verify it, copy to a temporary staging directory, then replace the generated embed directory safely.
-- Do not overwrite staged files when contents are identical; timestamp churn invalidates the Go embed package and forces relinking.
+- Do not overwrite staged files when contents are identical; timestamp churn invalidates the Go embed package, or the Rust binary crate that embeds the files, and forces recompiling and relinking.
 - Update the fingerprint only after build, copy, and verification succeed.
 
 ## Enforce the speed budget
@@ -102,7 +113,7 @@ if (failures.length) { console.error(failures.join("\n")); process.exit(1) }
 2. Run `typecheck` when types, routes, search schemas, or API contracts changed and a build is not already planned.
 3. Add or run Vitest + Testing Library only for high-risk interaction state that lint and types cannot falsify (selection logic, optimistic updates, search-param round-trips).
 4. Run `vite build` when frontend inputs changed or before staging.
-5. Run the combined artifact gate when the Go embedding seam changed or before release. It ends with the fallback smoke test against the built binary: `/`, a deep link with search params, a hashed JS and CSS asset (content type and `immutable`), a missing asset (`404`), `/api/unknown` (JSON `404`), `/api/config`, `/mcp`, and the manifest.
+5. Run the combined artifact gate when the backend embedding seam changed or before release. It ends with the fallback smoke test against the built release binary: `/`, a deep link with search params, a hashed JS and CSS asset (content type and `immutable`), a missing asset (`404`), `/api/unknown` (JSON `404`), `/api/config`, `/mcp`, and the manifest.
 6. Use scripted Playwright only at the final regression gate, when changing its coverage, or when cheaper checks cannot falsify cross-app behavior. Include one deep-link reload in it.
 
 Record warm wall times for standard checks. Measure clean baselines separately and infrequently. Never clear caches in the normal loop merely to produce a timing number.

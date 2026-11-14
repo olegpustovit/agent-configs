@@ -4,8 +4,9 @@ name = "react-dev"
 version = "0.1.0"
 
 [dependencies]
-# Backend foundation that build-react-stack extends.
+# Backend foundations that build-react-stack extends (Go or Rust).
 "github.com/olegpustovit/agent-configs/skills/build-go-stack" = "dev"
+"github.com/olegpustovit/agent-configs/skills/build-rust-stack" = "dev"
 # UI components and design.
 "github.com/shadcn-ui/ui/skills/shadcn" = {}
 "github.com/pbakaus/impeccable" = {}

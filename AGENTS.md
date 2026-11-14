@@ -19,7 +19,7 @@ This repo holds **reusable agent configuration**: Cursor/Claude plugin layouts, 
 ## `plugins/` — packaged plugins
 
 - **`plugins/sample-plugin/`** — Reference layout: rules, skills, agents, commands, hooks, MCP stub, dual Cursor/Claude manifests. Preserve it as a small exemplar unless the task is to change that reference. See its README for symlink install.
-- **`plugins/react-dev/`** — React frontend stack for apps served from a Go binary. It ships only `build-react-stack`; everything else (including `skills/build-go-stack`) comes through its `agentpack.toml`. Add third-party skills there instead of copying them.
+- **`plugins/react-dev/`** — React frontend stack for apps served from a Go or Rust binary. It ships only `build-react-stack`; everything else (including `skills/build-go-stack` and `skills/build-rust-stack`) comes through its `agentpack.toml`. Add third-party skills there instead of copying them.
 - **`plugins/simplifier/`** — Small plugin (e.g. agents); extend only as that package grows.
 
 ## Where to add a **new skill** (choose one)

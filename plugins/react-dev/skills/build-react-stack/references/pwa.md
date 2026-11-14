@@ -55,7 +55,7 @@ Extend the contract table and its Go test:
 ## Verify
 
 - `dist/sw.js` exists and lists `index.html` and the hashed entry assets in its precache manifest.
-- Through the built Go binary, the smoke test checks the two `no-cache` rows above.
+- Through the built backend binary, the smoke test checks the two `no-cache` rows above.
 - In one Playwright run: load `/`, wait for `navigator.serviceWorker.ready`, go offline with `context.setOffline(true)`, reload a deep link, and expect the app shell. Skip this check for non-PWA apps.
 
 Primary source: [vite-plugin-pwa guide](https://vite-pwa-org.netlify.app/guide/).

@@ -22,7 +22,7 @@ This checks [plugins/sample-plugin](plugins/sample-plugin/). Its MCP command is 
 
 | Path | Contents |
 | --- | --- |
-| [plugins/react-dev](plugins/react-dev/) | Fast React SPAs embedded in a Go binary; pulls in `build-go-stack` and third-party React, TanStack, shadcn and design skills |
+| [plugins/react-dev](plugins/react-dev/) | Fast React SPAs embedded in a Go or Rust binary; pulls in `build-go-stack`, `build-rust-stack` and third-party React, TanStack, shadcn and design skills |
 | [plugins/simplifier](plugins/simplifier/) | A smaller agent plugin |
 | [skills](skills/) | Standalone skills with `SKILL.md` entry points |
 | [skills/build-go-stack](skills/build-go-stack/) | Go backend architecture, PostgreSQL persistence, SQLite for single-file apps, deployment, MCP and testing |

@@ -17,6 +17,18 @@ cache_key = '67fd389247108c67c97c614e64445eadab2e8fb46eb49db907a6cb74e69b7180'
 content_hash = 'sha256-tree-v1:00b15fa88566e2c189b4c27d75e86351d5298542292eeb4802eef19811a0e18c'
 
 [[packages]]
+module = 'github.com/olegpustovit/agent-configs/skills/build-rust-stack'
+direct = true
+kind = 'skill'
+url = 'https://github.com/olegpustovit/agent-configs/tree/dev/skills/build-rust-stack'
+owner = 'olegpustovit'
+repo = 'agent-configs'
+path = 'skills/build-rust-stack'
+commit = '1e12f1faf7cd182ec7cbf60557a474163e46dc40'
+cache_key = 'e332bb52d16999e24054f7e912dc829a5a23cd1b0ee52869430c4fbf8906b671'
+content_hash = 'sha256-tree-v1:ee8e487b811fc8be74dfa6627a3a1108584e1b36007aabe4613ea14634836ead'
+
+[[packages]]
 module = 'github.com/pbakaus/impeccable'
 direct = true
 kind = 'plugin'
